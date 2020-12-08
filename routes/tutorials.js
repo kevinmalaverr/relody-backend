@@ -21,6 +21,21 @@ function tutorialsApi(app) {
       next(error)
     }
   })
+
+  router.post('/create', async (req, res, next) => {
+    const { body: tutorial } = req
+    console.log(tutorial)
+    try {
+      const createdTutorialId = await tutorialsService.createTutorial({ tutorial })
+
+      res.status(201).json({
+        data: createdTutorialId,
+        message: 'created Tutorial'
+      })
+    } catch (error) {
+      next(error)
+    }
+  })
 }
 
 module.exports = tutorialsApi

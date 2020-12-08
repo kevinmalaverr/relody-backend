@@ -4,8 +4,9 @@ const { config } = require('./config/index')
 // routes
 const tutorialsApi = require('./routes/tutorials')
 
-
 const app = express()
+
+app.use(express.json())
 
 
 //routes
