@@ -1,4 +1,7 @@
 const MongoLib = require('../lib/mongo')
+const crypto = require('crypto')
+const { writeFile } = require('../utils/dir/readWriteFile')
+
 
 class TutorialsService {
   constructor() {
@@ -18,7 +21,10 @@ class TutorialsService {
   }
 
   async createTutorial({ tutorial }) {
-    const createdTutorialId = await this.mongoDb.create(this.collection, tutorial);
+    const fileName = crypto.randomBytes(12).toString("hex")
+    writeFile('tutorials', fileName + '.json', JSON.stringify(tutorial.content))
+    const newTutorial = { ...tutorial, content: fileName }
+    const createdTutorialId = await this.mongoDb.create(this.collection, newTutorial);
     return createdTutorialId;
   }
 
