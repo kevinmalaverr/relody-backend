@@ -21,10 +21,7 @@ class TutorialsService {
   }
 
   async createTutorial({ tutorial }) {
-    const fileName = crypto.randomBytes(12).toString("hex")
-    writeFile('tutorials', fileName + '.json', JSON.stringify(tutorial.content))
-    const newTutorial = { ...tutorial, content: fileName }
-    const createdTutorialId = await this.mongoDb.create(this.collection, newTutorial);
+    const createdTutorialId = await this.mongoDb.create(this.collection, tutorial);
     return createdTutorialId;
   }
 
@@ -40,6 +37,10 @@ class TutorialsService {
   async deleteMovie({ movieId }) {
     const deletedMovieId = await this.mongoDB.delete(this.collection, movieId);
     return deletedMovieId;
+  }
+
+  async likeTutorial({ }) {
+    const d = await this.mongoDb.get()
   }
 }
 

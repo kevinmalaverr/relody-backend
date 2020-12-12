@@ -1,6 +1,5 @@
 const express = require('express')
 const TutorialsService = require('../services/tutorials')
-const MongoLib = require('../lib/mongo')
 
 function tutorialsApi(app) {
   const router = express.Router()
@@ -35,6 +34,10 @@ function tutorialsApi(app) {
     } catch (error) {
       next(error)
     }
+  })
+
+  router.put('/like-tutorial', async (req, res, next) => {
+
   })
 }
 
