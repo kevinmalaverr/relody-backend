@@ -1,0 +1,39 @@
+content: {
+  header: { }
+  events: [],
+}
+
+events: [type, data...]
+type: 'lyric' | 'chords' | 'comment'
+
+type_lyric: [type: String, lyric: String, chords: []: Chord, repeat: Number]
+type_chord: [type: String, chords: []: Chord, repeat: Number]
+type_comment: [type: String, lyric: String]
+
+Chord: [position: Number, name: String]
+
+example
+
+content: {
+  header: {
+    affination: 'Em'
+  }
+  events: [
+    [
+      "lyric",
+      ["en algun lugar de un gran pais"]
+      [[0, "Em"], [6, "G"], [11, "D"], [19, "Em"], [22, "G"], [23, "D"]]
+    ],
+    [
+      "lyric",
+      ["en algun lugar de un gran pais"]
+      [[0, "Em"], [6, "G"], [11, "D"], [19, "Em"], [22, "G"], [23, "D"]],
+    ],
+    [
+      "chords"
+      [0, "Em"], [6, "G"], [11, "D"],
+      3
+    ]
+    ["comment", "la estrofa se repite"]
+  ]
+}
