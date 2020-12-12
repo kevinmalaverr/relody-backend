@@ -25,22 +25,18 @@ class TutorialsService {
     return createdTutorialId;
   }
 
-  async updateMovie({ movieId, movie } = {}) {
-    const updatedMovieId = await this.mongoDb.update(
+  async updateTutorial({ tutorialId, tutorial } = {}) {
+    const updatedTutorialId = await this.mongoDb.update(
       this.collection,
-      movieId,
-      movie
+      tutorialId,
+      tutorial
     );
-    return updatedMovieId;
+    return updatedTutorialId;
   }
 
-  async deleteMovie({ movieId }) {
-    const deletedMovieId = await this.mongoDB.delete(this.collection, movieId);
-    return deletedMovieId;
-  }
-
-  async likeTutorial({ }) {
-    const d = await this.mongoDb.get()
+  async deleteTutorial({ tutorialId }) {
+    const deletedTutorialId = await this.mongoDB.delete(this.collection, tutorialId);
+    return deletedTutorialId;
   }
 }
 

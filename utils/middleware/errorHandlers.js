@@ -23,9 +23,7 @@ function wrapErrors(err, req, res, next) {
 }
 
 function errorHandler(err, req, res, next) {
-  const {
-    output: { statusCode, payload }
-  } = err;
+  const { output: { statusCode, payload } } = err;
   res.status(statusCode);
   res.json(withErrorStack(payload, err.stack));
 }
