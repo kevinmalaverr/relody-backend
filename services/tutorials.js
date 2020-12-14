@@ -21,6 +21,7 @@ class TutorialsService {
   }
 
   async createTutorial({ tutorial }) {
+    // tutorial = { ...tutorial, creationTime: { $currentDate: { dateField: true } } }
     const createdTutorialId = await this.mongoDb.create(this.collection, tutorial);
     return createdTutorialId;
   }

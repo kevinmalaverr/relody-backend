@@ -11,7 +11,7 @@ const tutorialContent = joi.object()
 const createTutorialSchema = {
   songName: tutorialSongName.required(),
   artist: tutorialArtist.required(),
-  autor: tutorialAutor.required(),
+  // autor: tutorialAutor.required(),
   instrument: tutorialInstrument.required(),
   difficult: tutorialDifficult.required(),
   content: tutorialContent.required(),
