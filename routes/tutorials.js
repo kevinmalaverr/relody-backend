@@ -30,7 +30,11 @@ function tutorialsApi(app) {
       const { tutorialId } = req.params
 
       try {
-
+        const tutorial = await tutorialsService.getTutorial({ tutorialId })
+        res.status(200).json({
+          data: tutorial,
+          message: 'tutorial returned'
+        })
       } catch (error) {
         next(error)
       }
@@ -59,7 +63,7 @@ function tutorialsApi(app) {
     validationHandler(updateTutorialSchema),
     async (req, res, next) => {
       const { tutorialId } = req.params;
-      const { body: tutorial } = req;
+      const tutorial = req.body
 
       try {
         const updatedTutorialId = await tutorialsService.updateTutorial({
@@ -77,7 +81,7 @@ function tutorialsApi(app) {
     })
 
   router.delete(
-    '/:movieId',
+    '/:tutorialId',
     validationHandler({ tutorialId: tutorialIdSchema }, 'params'),
     async (req, res, next) => {
       const { tutorialId } = req.params;
@@ -86,7 +90,7 @@ function tutorialsApi(app) {
         const deletedTutorialId = await tutorialsService.deleteTutorial({ tutorialId });
 
         res.status(200).json({
-          data: deletedMovieId,
+          data: deletedTutorialId,
           message: 'tutorial deleted'
         });
       } catch (err) {

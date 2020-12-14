@@ -35,7 +35,7 @@ class TutorialsService {
   }
 
   async deleteTutorial({ tutorialId }) {
-    const deletedTutorialId = await this.mongoDB.delete(this.collection, tutorialId);
+    const deletedTutorialId = await this.mongoDb.delete(this.collection, tutorialId);
     return deletedTutorialId;
   }
 }
