@@ -1,7 +1,7 @@
 const tutorialsMocks = require('./tutorialsMocks.json')
 
 function filteredTutorialsMock(tag) {
-  return tutorialsMocks.filter(tutorial => tutorial.includes(tag))
+  return tutorialsMocks.filter(tutorial => tutorial.songName.includes(tag))
 }
 
 class TutorialsServiceMock {
