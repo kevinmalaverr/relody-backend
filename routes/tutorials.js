@@ -2,6 +2,7 @@ const express = require('express')
 const TutorialsService = require('../services/tutorials')
 const { createTutorialSchema, updateTutorialSchema, tutorialIdSchema } = require('../utils/schemas/tutorials')
 const validationHandler = require('../utils/middleware/validationHandler')
+const transporter = require('../utils/mails/transporter')
 
 function tutorialsApi(app) {
   const router = express.Router()
@@ -13,6 +14,15 @@ function tutorialsApi(app) {
     const { tags } = req.query
 
     try {
+
+      await transporter.sendMail({
+        from: '"verificar email 👻" <kevinmalaverr@gmail.com>', // sender address
+        to: "amalaver@unal.edu.co", // list of receivers
+        subject: "vericar email", // Subject line
+        text: "Hello world?", // plain text body
+        html: "<b style='font-size:24px; color:blue'>Hello world?</b>", // html body
+      });
+
       const tutorials = await tutorialsService.getTutorials({ tags })
       res.status(200).json({
         data: tutorials,

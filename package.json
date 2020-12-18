@@ -7,7 +7,7 @@
     "dev": "set DEBUG=app:*&& nodemon index",
     "start": "set NODE_ENV=production && node index",
     "test": "mocha --exit",
-    "cover": "nyc npm run test", 
+    "cover": "nyc npm run test",
     "report": "nyc report --reporter=html && start coverage/index.html"
   },
   "keywords": [],
@@ -19,7 +19,8 @@
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongodb": "^3.6.3"
+    "mongodb": "^3.6.3",
+    "nodemailer": "^6.4.17"
   },
   "devDependencies": {
     "mocha": "^8.2.1",
@@ -28,8 +29,13 @@
     "sinon": "^9.2.2",
     "supertest": "^6.0.1"
   },
-  "nyc":{
-    "all":true,
-    "inclued":["routes", "services", "lib","utils"]
+  "nyc": {
+    "all": true,
+    "inclued": [
+      "routes",
+      "services",
+      "lib",
+      "utils"
+    ]
   }
 }
