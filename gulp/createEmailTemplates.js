@@ -34,7 +34,7 @@ const templateToJs = through.obj((file, _, cb) => {
   }
 });
 
-task("create-email", () => {
+task("create-email-templates", () => {
   return src(filesToRender)
     .pipe(templateToJs)
     .pipe(rename({ extname: ".js" }))
