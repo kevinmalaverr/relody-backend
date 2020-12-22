@@ -17,6 +17,8 @@ const app = express();
 // body parser
 app.use(express.json());
 
+app.use('/static', express.static('static'));
+
 //routes
 authApi(app);
 tutorialsApi(app);
