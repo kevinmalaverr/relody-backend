@@ -1,28 +1,35 @@
-const { src, dest, task } = require("gulp");
-const through = require("through2");
-const mjmlEngine = require("mjml");
-const rename = require("gulp-rename");
+const { src, dest, task } = require('gulp');
+const through = require('through2');
+const mjmlEngine = require('mjml');
+const rename = require('gulp-rename');
 
-const TEMPLATES_PATH = "./email-templates/mjml/";
-const FILES_NAMES = ["header"];
+const TEMPLATES_PATH = './email-templates/mjml/';
+const FILES_NAMES = ['general'];
 
 const filesToRender = FILES_NAMES.map(
-  (file) => TEMPLATES_PATH + file + ".mjml"
+  (file) => TEMPLATES_PATH + file + '.mjml'
 );
 
 const templateToJs = through.obj((file, _, cb) => {
   if (file.isBuffer()) {
     const output = file.clone();
-    let render = "";
+    const fileString = file.contents.toString();
+    const [...matches] = fileString.matchAll(/\$\{(.*)\}/g);
+
+    let render = '';
 
     try {
-      render += "module.exports = function (content){ return `";
-      render += mjmlEngine(file.contents.toString(), {
+      render += `module.exports = function ({${matches
+        .map((match) => match[1])
+        .join()}}){ `;
+
+      render += 'return `';
+      render += mjmlEngine(fileString, {
         filePath: TEMPLATES_PATH,
         minify: true,
         keepComments: false,
       }).html;
-      render += "`}";
+      render += '`}';
     } catch (e) {
       console.error(e);
       return cb();
@@ -34,9 +41,9 @@ const templateToJs = through.obj((file, _, cb) => {
   }
 });
 
-task("create-email-templates", () => {
+task('create-email-templates', () => {
   return src(filesToRender)
     .pipe(templateToJs)
-    .pipe(rename({ extname: ".js" }))
-    .pipe(dest("./email-templates/"));
+    .pipe(rename({ extname: '.js' }))
+    .pipe(dest('./email-templates/'));
 });
