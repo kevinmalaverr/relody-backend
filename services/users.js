@@ -13,12 +13,10 @@ class UsersService {
   }
 
   async createUser({ user }) {
-    const { name, email, password } = user;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
     const createdUserId = await this.mongoDb.create(this.collection, {
-      name,
-      email,
+      ...user,
       password: hashedPassword,
     });
 

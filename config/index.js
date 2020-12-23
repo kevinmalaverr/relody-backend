@@ -1,7 +1,8 @@
-require("dotenv").config();
+const os = require('os');
+require('dotenv').config();
 
 const config = {
-  dev: process.env.NODE_ENV !== "production",
+  dev: process.env.NODE_ENV !== 'production',
   port: process.env.PORT || 3000,
   cors: process.env.CORS,
   dbUser: process.env.DB_USER,
@@ -13,6 +14,8 @@ const config = {
   authJwtSecret: process.env.AUTH_JWT_SECRET,
   publicApiKeyToken: process.env.PUBLIC_API_KEY_TOKEN,
   adminApiKeyTokcen: process.env.ADMIN_API_KEY_TOKEN,
+  frontendUrl: process.env.FRONTEND_URL,
+  processUrl: os.networkInterfaces()['eth0'][0].address,
 };
 
 module.exports = { config };

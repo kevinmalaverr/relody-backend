@@ -1,11 +1,12 @@
 const mailer = require('../lib/mailer');
+const { config } = require('../config');
 
 class MailerService {
   constructor() {
     this.mailer = mailer;
   }
 
-  registerConfirmation({ email, name }) {
+  registerConfirmation({ email, name, userId, secretCode }) {
     this.mailer
       .send({
         template: '../emails/emailConfirmation',
@@ -16,8 +17,10 @@ class MailerService {
         },
         locals: {
           name,
+          activationUrl: `${config.processUrl}:${config.port}/${userId}/${secretCode}`,
         },
       })
+      .then(console.log)
       .catch(console.error);
   }
 }

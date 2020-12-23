@@ -7,6 +7,8 @@ const { config } = require('../config');
 const UsersService = require('../services/users');
 const validationHandler = require('../utils/middleware/validationHandler');
 const { createUserSchema } = require('../utils/schemas/users');
+const crypto = require('crypto');
+const MailerService = require('../services/mailer');
 
 require('../utils/auth/strategies/basic');
 
@@ -16,6 +18,7 @@ function authApi(app) {
 
   const apiKeysService = new ApiKeysService();
   const usersService = new UsersService();
+  const mailerService = new MailerService();
 
   router.post('/sign-in', async function (req, res, next) {
     const { apiKeyToken } = req.body;
@@ -76,7 +79,18 @@ function authApi(app) {
             message: 'user already exists',
           });
         }
-        const createdUserId = await usersService.createUser({ user });
+
+        const secretCode = crypto.randomBytes(16).toString('hex');
+        const createdUserId = await usersService.createUser({
+          user: { ...user, secretCode, status: 'pending' },
+        });
+
+        mailerService.registerConfirmation({
+          email: user.email,
+          name: user.name,
+          userId: createdUserId,
+          secretCode,
+        });
 
         res.status(201).json({
           data: createdUserId,
@@ -87,6 +101,10 @@ function authApi(app) {
       }
     }
   );
+
+  router.get('/verify-account/:userId/:secretCode', async (req, res, next) => {
+    const { userId, secretCode } = req.params;
+  });
 }
 
 module.exports = authApi;
