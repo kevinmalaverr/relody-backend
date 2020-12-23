@@ -104,6 +104,16 @@ function authApi(app) {
 
   router.get('/verify-account/:userId/:secretCode', async (req, res, next) => {
     const { userId, secretCode } = req.params;
+
+    try {
+      const user = await usersService.getUser({ userId });
+      if (secretCode === user.secretCode) {
+        await usersService.changeUserStatus({ userId, status: 'active' });
+        res.redirect('https://expressjs.com/es/guide/routing.html');
+      }
+    } catch (error) {
+      next(error);
+    }
   });
 }
 

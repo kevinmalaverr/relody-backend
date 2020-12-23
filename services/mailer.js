@@ -17,7 +17,7 @@ class MailerService {
         },
         locals: {
           name,
-          activationUrl: `${config.processUrl}:${config.port}/${userId}/${secretCode}`,
+          activationUrl: `${config.processUrl}:${config.port}/api/auth/verify-account/${userId}/${secretCode}`,
         },
       })
       .then(console.log)
