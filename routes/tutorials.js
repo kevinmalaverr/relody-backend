@@ -1,123 +1,122 @@
-const express = require('express');
-const TutorialsService = require('../services/tutorials');
-const {
-  createTutorialSchema,
-  updateTutorialSchema,
-  tutorialIdSchema,
-} = require('../utils/schemas/tutorials');
-const validationHandler = require('../utils/middleware/validationHandler');
-const transporter = require('../utils/mails/transporter');
+const express = require('express')
+const TutorialsService = require('../services/tutorials')
+const { createTutorialSchema, updateTutorialSchema, tutorialIdSchema } = require('../utils/schemas/tutorials')
+const validationHandler = require('../utils/middleware/validationHandler')
+const cacheResponse = require('../utils/cacheResponse')
+const passport = require('passport')
+const scopesValidationHandler = require('../utils/middleware/scopesValidationHandler')
 
-function tutorialsApi(app) {
-  const router = express.Router();
-  app.use('/api/tutorials', router);
+require('../utils/auth/strategies/jwt')
 
-  const tutorialsService = new TutorialsService();
+function tutorialsApi (app) {
+  const router = express.Router()
+  const tutorialsService = new TutorialsService()
 
-  router.get('/', async (req, res, next) => {
-    const { tags } = req.query;
+  app.use('/api/tutorials', router)
 
-    try {
-      // await transporter.sendMail({
-      //   from: '"verificar email 👻" <kevinmalaverr@gmail.com>', // sender address
-      //   to: "amalaver@unal.edu.co", // list of receivers
-      //   subject: "vericar email", // Subject line
-      //   text: "Hello world?", // plain text body
-      //   html: generalTemplate("confirmar cuenta"), // html body
-      // });
+  router.get(
+    '/',
+    async (req, res, next) => {
+      cacheResponse(res, 300)
+      const { tags } = req.query
 
-      const tutorials = await tutorialsService.getTutorials({ tags });
-      res.status(200).json({
-        data: tutorials,
-        message: 'tutorials listed',
-      });
-    } catch (error) {
-      next(error);
-    }
-  });
+      try {
+        const tutorials = await tutorialsService.getTutorials({ tags })
+        res.status(200).json({
+          data: tutorials,
+          message: 'tutorials listed'
+        })
+      } catch (error) {
+        next(error)
+      }
+    })
 
   router.get(
     '/:tutorialId',
     validationHandler({ tutorialId: tutorialIdSchema }, 'params'),
     async (req, res, next) => {
-      const { tutorialId } = req.params;
+      const { tutorialId } = req.params
 
       try {
-        const tutorial = await tutorialsService.getTutorial({ tutorialId });
+        const tutorial = await tutorialsService.getTutorial({ tutorialId })
         res.status(200).json({
           data: tutorial,
-          message: 'tutorial returned',
-        });
+          message: 'tutorial returned'
+        })
       } catch (error) {
-        next(error);
+        next(error)
       }
     }
-  );
+  )
 
   router.post(
     '/create',
+    passport.authenticate('jwt', { session: false }),
     validationHandler(createTutorialSchema),
     async (req, res, next) => {
-      const { body: tutorial } = req;
+      const { body: tutorial } = req
       try {
         const createdTutorialId = await tutorialsService.createTutorial({
-          tutorial,
-        });
+          tutorial
+        })
 
         res.status(201).json({
           data: createdTutorialId,
-          message: 'created Tutorial',
-        });
+          message: 'created Tutorial'
+        })
       } catch (error) {
-        next(error);
+        next(error)
       }
     }
-  );
+  )
 
   router.put(
     '/:tutorialId',
+    passport.authenticate('jwt', { session: false }),
     validationHandler({ tutorialId: tutorialIdSchema }, 'params'),
     validationHandler(updateTutorialSchema),
     async (req, res, next) => {
-      const { tutorialId } = req.params;
-      const tutorial = req.body;
+      cacheResponse(res, 3600)
+      const { tutorialId } = req.params
+      const tutorial = req.body
 
       try {
         const updatedTutorialId = await tutorialsService.updateTutorial({
           tutorialId,
-          tutorial,
-        });
+          tutorial
+        })
 
         res.status(200).json({
           data: updatedTutorialId,
-          message: 'tutorial updated',
-        });
+          message: 'tutorial updated'
+        })
       } catch (err) {
-        next(err);
+        next(err)
       }
     }
-  );
+  )
 
   router.delete(
     '/:tutorialId',
+    passport.authenticate('jwt', { session: false }),
     validationHandler({ tutorialId: tutorialIdSchema }, 'params'),
     async (req, res, next) => {
-      const { tutorialId } = req.params;
+      const { tutorialId } = req.params
 
       try {
         const deletedTutorialId = await tutorialsService.deleteTutorial({
-          tutorialId,
-        });
+          tutorialId
+        })
 
         res.status(200).json({
           data: deletedTutorialId,
-          message: 'tutorial deleted',
-        });
+          message: 'tutorial deleted'
+        })
       } catch (err) {
-        next(err);
+        next(err)
       }
     }
-  );
+  )
 }
 
-module.exports = tutorialsApi;
+module.exports = tutorialsApi

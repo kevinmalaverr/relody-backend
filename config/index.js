@@ -1,5 +1,5 @@
-const os = require('os');
-require('dotenv').config();
+const os = require('os')
+require('dotenv').config()
 
 const config = {
   dev: process.env.NODE_ENV !== 'production',
@@ -15,7 +15,7 @@ const config = {
   publicApiKeyToken: process.env.PUBLIC_API_KEY_TOKEN,
   adminApiKeyTokcen: process.env.ADMIN_API_KEY_TOKEN,
   frontendUrl: process.env.FRONTEND_URL,
-  processUrl: os.networkInterfaces()['eth0'][0].address,
-};
+  processUrl: os.networkInterfaces().eth0[0].address
+}
 
-module.exports = { config };
+module.exports = { config }
