@@ -10,11 +10,11 @@ getAllStub.withArgs('tutorials', tagQuery).resolves(tutorialsMocks)
 const createStub = sinon.stub().resolves(tutorialsMocks[0].id)
 
 class MongoLibMock {
-  getAll(collection, query) {
+  getAll (collection, query) {
     return getAllStub(collection, query)
   }
 
-  create(collection, data) {
+  create (collection, data) {
     return createStub(collection, data)
   }
 }

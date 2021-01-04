@@ -15,6 +15,8 @@ const config = {
   publicApiKeyToken: process.env.PUBLIC_API_KEY_TOKEN,
   adminApiKeyTokcen: process.env.ADMIN_API_KEY_TOKEN,
   frontendUrl: process.env.FRONTEND_URL,
+  emailAddress: process.env.EMAIL_ADDRESS,
+  emailPassword: process.env.EMAIL_PASSWORD,
   processUrl: os.networkInterfaces().eth0[0].address
 }
 

@@ -1,15 +1,15 @@
 const tutorialsMocks = require('./tutorialsMocks.json')
 
-function filteredTutorialsMock(tag) {
+function filteredTutorialsMock (tag) {
   return tutorialsMocks.filter(tutorial => tutorial.songName.includes(tag))
 }
 
 class TutorialsServiceMock {
-  async getTutorials() {
+  async getTutorials () {
     return Promise.resolve(tutorialsMocks)
   }
 
-  async createTutorial() {
+  async createTutorial () {
     return Promise.resolve(tutorialsMocks[0])
   }
 }
