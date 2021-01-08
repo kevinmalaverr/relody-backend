@@ -18,10 +18,10 @@ function tutorialsApi (app) {
     '/',
     async (req, res, next) => {
       cacheResponse(res, 300)
-      const { tags } = req.query
+      const pageNumber = (req.query && req.query.pageNumber) || 0
 
       try {
-        const tutorials = await tutorialsService.getTutorials({ tags })
+        const tutorials = await tutorialsService.getTutorials({ pageNumber })
         res.status(200).json({
           data: tutorials,
           message: 'tutorials listed'

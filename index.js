@@ -2,7 +2,6 @@ const express = require('express')
 const { config } = require('./config/index')
 const { errorHandler, logErrors, wrapErrors } = require('./utils/middleware/errorHandlers')
 const notFoundHandler = require('./utils/middleware/notFoundHandler')
-const emailsPreview = require('./routes/emailsPreview')
 const cors = require('cors')
 
 // routes
@@ -23,9 +22,9 @@ authApi(app)
 tutorialsApi(app)
 
 // emails preview
-if (config.dev) {
-  emailsPreview(app)
-}
+// if (config.dev) {
+//   emailsPreview(app)
+// }
 
 // catch 404 error
 app.use(notFoundHandler)

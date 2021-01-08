@@ -20,6 +20,10 @@ passport.use(
         return cb(boom.unauthorized(), false)
       }
 
+      if (user.status !== 'active') {
+        return cb(boom.unauthorized(), false)
+      }
+
       delete user.password
 
       return cb(null, user)

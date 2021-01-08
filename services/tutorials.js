@@ -6,9 +6,9 @@ class TutorialsService {
     this.mongoDb = new MongoLib()
   }
 
-  async getTutorials ({ tags }) {
-    const query = tags && { tags: { $in: tags } }
-    const tutorials = await this.mongoDb.getAll(this.collection, query)
+  async getTutorials ({ pageNumber }) {
+    const nPerPage = 10
+    const tutorials = await this.mongoDb.getPagination(this.collection, { query: {}, sort: { likes: -1 }, pageNumber, nPerPage })
     return tutorials || []
   }
 
@@ -18,7 +18,6 @@ class TutorialsService {
   }
 
   async createTutorial ({ tutorial }) {
-    // tutorial = { ...tutorial, creationTime: { $currentDate: { dateField: true } } }
     const createdTutorialId = await this.mongoDb.create(this.collection, tutorial)
     return createdTutorialId
   }
